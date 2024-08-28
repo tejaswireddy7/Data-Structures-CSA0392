@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 1000
+typedef struct {
+    int stack1[SIZE];
+    int top1;
+    int stack2[SIZE];
+    int top2;
+} MyQueue;
+MyQueue* myQueueCreate() {
+    MyQueue* obj = (MyQueue*)malloc(sizeof(MyQueue));
+    obj->top1 = -1;
+    obj->top2 = -1;
+    return obj;
+}
+void myQueuePush(MyQueue* obj, int x) {
+    obj->stack1[++obj->top1] = x;
+}
+int myQueuePop(MyQueue* obj) {
+    if (obj->top2 == -1) {
+        while (obj->top1 > -1) {
+            obj->stack2[++obj->top2] = obj->stack1[obj->top1--];
+        }
+    }
+    return obj->stack2[obj->top2--];
+}
+int myQueuePeek(MyQueue* obj) {
+    if (obj->top2 == -1) {
+        while (obj->top1 > -1) {
+            obj->stack2[++obj->top2] = obj->stack1[obj->top1--];
+        }
+    }
+    return obj->stack2[obj->top2];
+}
+bool myQueueEmpty(MyQueue* obj) {
+    return (obj->top1 == -1 && obj->top2 == -1);
+}
+void myQueueFree(MyQueue* obj) {
+    free(obj);
+}
+int main() {
+    MyQueue* obj = myQueueCreate();
+    myQueuePush(obj, 1);
+    myQueuePush(obj, 2);
+    printf("%d\n", myQueuePeek(obj));
+    printf("%d\n", myQueuePop(obj));
+    printf("%s\n", myQueueEmpty(obj) ? "true" : "false");
+    myQueueFree(obj);
+    return 0;
+}
