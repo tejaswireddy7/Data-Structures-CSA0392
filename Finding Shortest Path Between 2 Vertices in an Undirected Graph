@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define MAX 100
+int minEdgeBFS(int edges[MAX][MAX], int u, int v, int n) 
+{ 
+    bool visited[MAX] = {false}; 
+    int distance[MAX] = {0}; 
+    int Q[MAX], front = -1, rear = -1;
+    distance[u] = 0; 
+    rear++;
+    Q[rear] = u;
+    visited[u] = true; 
+    while (front != rear) 
+    { 
+        front++;
+        int x = Q[front]; 
+        for (int i = 0; i < n; i++) 
+        { 
+            if (edges[x][i] == 1 && !visited[i]) 
+            { 
+                distance[i] = distance[x] + 1; 
+                rear++;
+                Q[rear] = i; 
+                visited[i] = true; 
+            } 
+        } 
+    } 
+    return distance[v]; 
+} 
+void addEdge(int edges[MAX][MAX], int u, int v) 
+{ 
+    edges[u][v] = 1; 
+    edges[v][u] = 1; 
+} 
+int main() 
+{ 
+    int n = 9; 
+    int edges[MAX][MAX] = {0}; 
+    addEdge(edges, 0, 1); 
+    addEdge(edges, 0, 7); 
+    addEdge(edges, 1, 7); 
+    addEdge(edges, 1, 2); 
+    addEdge(edges, 2, 3); 
+    addEdge(edges, 2, 5); 
+    addEdge(edges, 2, 8); 
+    addEdge(edges, 3, 4); 
+    addEdge(edges, 3, 5); 
+    addEdge(edges, 4, 5); 
+    addEdge(edges, 5, 6); 
+    addEdge(edges, 6, 7); 
+    addEdge(edges, 7, 8); 
+    int u = 1; 
+    int v = 5; 
+    printf("%d\n", minEdgeBFS(edges, u, v, n)); 
+    return 0; 
+}
